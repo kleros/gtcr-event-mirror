@@ -1,8 +1,10 @@
-node_modules
-
 #Hardhat files
 cache
 artifacts
-.openzeppelin
+
+# These are development network files.
+.openzeppelin/unknown-*.json
+
+node_modules
 .vscode
 .env

@@ -6,12 +6,12 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build:contracts": "npx hardhat compile",
     "start:localnode": "npx hardhat node",
     "deploy:localhost": "npx hardhat run scripts/deploy-script.js --network localhost",
-    "test": "npx hardhat test",
-    "prettier-format": "prettier --config .prettierrc 'bot/**/*.ts' 'test/**/*.ts' 'scripts/**/*.ts' --write",
+    "prettier-format": "prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --write",
     "format": "yarn prettier-format && eslint . --ext .ts --fix",
-    "lint:js": "eslint . --ext .ts && prettier --config .prettierrc 'bot/**/*.ts' 'test/**/*.ts' 'scripts/**/*.ts' --check",
+    "lint:js": "eslint . --ext .ts && prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --check",
     "lint:secrets": "secretlint \"**/*\"",
     "lint": "yarn lint:secrets && yarn lint:js"
   },
