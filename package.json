@@ -1,0 +1,66 @@
+{
+  "name": "gtcr-event-mirror",
+  "version": "1.0.0",
+  "description": "GTCR contract events mirror for cross-chain dapps",
+  "author": "Kleros",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start:localnode": "npx hardhat node",
+    "deploy:localhost": "npx hardhat run scripts/deploy-script.js --network localhost",
+    "test": "npx hardhat test",
+    "prettier-format": "prettier --config .prettierrc 'bot/**/*.ts' 'test/**/*.ts' 'scripts/**/*.ts' --write",
+    "format": "yarn prettier-format && eslint . --ext .ts --fix",
+    "lint:js": "eslint . --ext .ts && prettier --config .prettierrc 'bot/**/*.ts' 'test/**/*.ts' 'scripts/**/*.ts' --check",
+    "lint:secrets": "secretlint \"**/*\"",
+    "lint": "yarn lint:secrets && yarn lint:js"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.0",
+    "@openzeppelin/hardhat-upgrades": "^1.4.1",
+    "@secretlint/secretlint-rule-preset-recommend": "^2.1.1",
+    "@secretlint/secretlint-rule-secp256k1-privatekey": "^2.1.1",
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "chai": "^4.2.0",
+    "dotenv-safe": "^8.2.0",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "ethereum-waffle": "^3.0.0",
+    "ethers": "^5.0.23",
+    "hardhat": "^2.0.4",
+    "husky": "^4.3.0",
+    "prettier": "^2.2.1",
+    "secretlint": "^2.1.1",
+    "standard-version": "^9.0.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "ignore": [
+      "/node_modules/**"
+    ],
+    "globals": [
+      "require"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
