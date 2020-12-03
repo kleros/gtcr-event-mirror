@@ -12,9 +12,6 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
   },
-  "include": ["./scripts", "./test", "bot/**/*"],
-  "files": ["./hardhat.config.ts"],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["bot/**/*"],
+  "files": ["./hardhat.config.ts"]
 }

@@ -8,7 +8,11 @@
   <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen Friendly"></a>
 </p>
 
-This tool allows an oracle to mirror events from a Generalized TCR contract to another contract. This is useful for cross-chain app development.
+This tool allows an oracle to mirror events from a Generalized TCR contract to another contract on another chain (though it can be used on the same chain).
+
+The motivation for the development of this tool is to allow a subgraph synced to an Ethereum blockchain (say xDai) to handle changes that happen on another chain (say Mainnet). This allows for queries using data from both blockchains.
+
+Throughout this project, we call "watch contract" the contract from which the bot reads events, and "mirror contract" the contract to which it sends transactions/relays the events.
 
 ## Prerequisites
 
@@ -26,23 +30,15 @@ If developing in VS Code/Codium, you can use this `.vscode/launch.json` file for
 
 ```
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "preLaunchTask": "${defaultBuildTask}",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}/dist",
-      "outFiles": [
-        "${workspaceFolder}/**/*.js"
-      ]
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "program": "${workspaceFolder}/bot/index.ts",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     }
   ]
 }
