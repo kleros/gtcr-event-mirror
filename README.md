@@ -20,11 +20,13 @@ Throughout this project, we call "watch contract" the contract from which the bo
 
 ## Development
 
-1.  Clone this repo.
-2.  Duplicate `.env.example`, rename it to `.env` and fill in the environment variables.
-3.  Run `yarn` to install dependencies and then `yarn start` to run the bot.
+1.  Clone this repo and run `yarn`.
+2.  Duplicate `.env.example` and name it `.env`.
+3.  Run `yarn start:localnode`. Once it finishes booting, copy the first account private key and paste it on the `MIRROR_CONTRACT_WALLET_PRIVATE_KEY` variable in .`env.`. It should be the same every time you boot your node.
+4.  On another terminal, run `yarn deploy:localhost`. Copy the GeneralizedTCR address to the `WATCH_CONTRACT_ADDRESS` environment variable. Copy the GTCR events relay address to `MIRROR_CONTRACT_ADDRESS` environment variable.
+5.  To run the bot we have to options see option `Option A` if are working on VS Code/Codium and `Option B` to just run the bot.
 
-## Debugging
+### Option A
 
 If developing in VS Code/Codium, you can use this `.vscode/launch.json` file for debugging:
 
@@ -43,6 +45,12 @@ If developing in VS Code/Codium, you can use this `.vscode/launch.json` file for
   ]
 }
 ```
+
+With the file in place, just hit `F5`.
+
+### Option B
+
+Alternatively you can just build and run the bot with `yarn start:bot`.
 
 ## Contributing
 
