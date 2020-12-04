@@ -9,7 +9,7 @@
     "start:bot": "tsc -p tsconfig.json && node ./dist/bot/index.js",
     "build:contracts": "npx hardhat compile",
     "start:localnode": "yarn build:contracts && npx hardhat node",
-    "deploy:localhost": "npx hardhat run scripts/deploy.ts --network localhost",
+    "deploy:localhost": "npx hardhat run scripts/test-local.ts --network localhost",
     "prettier-format": "prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --write",
     "format": "yarn prettier-format && eslint . --ext .ts --fix",
     "lint:js": "eslint . --ext .ts && prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --check",

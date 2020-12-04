@@ -9,7 +9,7 @@ pragma solidity ^0.7.0;
 
 /**
  *  @title GTCREventsMirror
- *  This contract is a tool to allow mirroring events from a contract into a another. This is useful to publish information to a subgraph of events that happen in a chain it is not synced to.
+ *  This contract is a tool for mirroring events. This is useful to publish information to a subgraph of events that happen in a chain it is not synced to.
  *  @dev This contract was developed with upgradeability in mind. Please review the proxy upgrade pattern to learn about its limitations.
  */
 contract GTCREventsMirror {
@@ -85,14 +85,14 @@ contract GTCREventsMirror {
     bool[] memory _requestsResolved,
     uint _eventCountStart
   ) external onlyOracle afterInitialized {
+    require(_eventCountStart == eventToCount[ITEM_STATUS_CHANGE_IDENTIFIER], "Event already emmited.");
     for (uint i = 0; i < _itemIDs.length; i++) {
-      require(_eventCountStart == eventToCount[ITEM_STATUS_CHANGE_IDENTIFIER], "Event already emmited.");
       emit ItemStatusChange(
-        _itemIDs[0],
-        _requestIndexes[0],
-        _roundIndexes[0],
-        _disputesCreated[0],
-        _requestsResolved[0]
+        _itemIDs[i],
+        _requestIndexes[i],
+        _roundIndexes[i],
+        _disputesCreated[i],
+        _requestsResolved[i]
       );
       eventToCount[ITEM_STATUS_CHANGE_IDENTIFIER]++;
     }
