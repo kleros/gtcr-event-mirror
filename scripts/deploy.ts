@@ -3,27 +3,9 @@ import { run, ethers, upgrades } from 'hardhat';
 async function main() {
   await run('compile');
   const accounts = await ethers.getSigners();
-
-  const ArbitratorFactory = await ethers.getContractFactory(
-    'AutoAppealableArbitrator'
-  );
-
-  const GeneralizedTCRFactory = await ethers.getContractFactory(
-    'GeneralizedTCR'
-  );
-
-  const GTCREventsMirrorFactory = await ethers.getContractFactory(
-    'GTCREventsMirror'
-  );
-
-  console.info('Deploying arbitrator...');
-  const arbitrator = await upgrades.deployProxy(ArbitratorFactory, [0]);
-  await arbitrator.deployed();
-  console.info('Arbitrator deployed to:', arbitrator.address);
-
-  const governor = accounts[0];
-  const other = accounts[3];
-  const arbitratorExtraData = '0x85';
+  const governor = accounts[0].address;
+  const other = accounts[3].address;
+  const arbitratorExtraData = '0x00';
 
   const submissionBaseDeposit = 2000;
   const removalBaseDeposit = 1300;
@@ -36,8 +18,28 @@ async function main() {
   const registrationMetaEvidence = 'registrationMetaEvidence.json';
   const clearingMetaEvidence = 'clearingMetaEvidence.json';
 
+  //////////////////////
+  // Setup Arbitrator //
+  //////////////////////
+
+  console.info('Deploying arbitrator...');
+  const ArbitratorFactory = await ethers.getContractFactory(
+    'AutoAppealableArbitrator'
+  );
+  const arbitrator = await ArbitratorFactory.deploy(0);
+  await arbitrator.deployed();
+  console.info('Arbitrator deployed to:', arbitrator.address);
+  console.info('');
+
+  //////////////////////////
+  // Setup GeneralizedTCR //
+  //////////////////////////
+
   console.info('Deploying GTCR...');
-  const gtcr = await upgrades.deployProxy(GeneralizedTCRFactory, [
+  const GeneralizedTCRFactory = await ethers.getContractFactory(
+    'GeneralizedTCR'
+  );
+  const gtcr = await GeneralizedTCRFactory.deploy(
     arbitrator.address,
     arbitratorExtraData,
     other, // ConnectedTCR is not used here.
@@ -50,17 +52,28 @@ async function main() {
     removalChallengeBaseDeposit,
     challengePeriodDuration,
     [sharedStakeMultiplier, winnerStakeMultiplier, loserStakeMultiplier]
-  ]);
+  );
   await gtcr.deployed();
   console.info('GeneralizedTCR deployed to:', gtcr.address);
+  console.info('');
+
+  // TODO: Trigger ItemStatusChange events.
+
+  ///////////////////////////
+  // Setup GTCREventMirror //
+  ///////////////////////////
 
   console.info('Deploying events relay contract...');
+  const GTCREventsMirrorFactory = await ethers.getContractFactory(
+    'GTCREventsMirror'
+  );
   const GTCREventsMirror = await upgrades.deployProxy(
     GTCREventsMirrorFactory,
     []
   );
   await GTCREventsMirror.deployed();
   console.info('GTCR events relay deployed to:', GTCREventsMirror.address);
+  console.info('');
 }
 
 main()
