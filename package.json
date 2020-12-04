@@ -6,9 +6,10 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "start:bot": "tsc -p tsconfig.json && node ./dist/bot/index.js",
     "build:contracts": "npx hardhat compile",
-    "start:localnode": "npx hardhat node",
-    "deploy:localhost": "npx hardhat run scripts/deploy-script.js --network localhost",
+    "start:localnode": "yarn build:contracts && npx hardhat node",
+    "deploy:localhost": "npx hardhat run scripts/deploy.ts --network localhost",
     "prettier-format": "prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --write",
     "format": "yarn prettier-format && eslint . --ext .ts --fix",
     "lint:js": "eslint . --ext .ts && prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --check",
@@ -24,6 +25,7 @@
     "@secretlint/secretlint-rule-preset-recommend": "^2.1.1",
     "@secretlint/secretlint-rule-secp256k1-privatekey": "^2.1.1",
     "@types/chai": "^4.2.14",
+    "@types/dotenv-safe": "^8.1.1",
     "@types/mocha": "^8.0.4",
     "@types/node": "^14.14.10",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
@@ -62,5 +64,9 @@
       "pre-commit": "yarn lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "dependencies": {
+    "@kleros/tcr": "^2.0.0",
+    "delay": "^4.4.0"
   }
 }
