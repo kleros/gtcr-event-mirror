@@ -55,13 +55,14 @@ const itemStatusChangeHandler = async (
         lastRelayedLog = relayedLogs[relayedLogs.length - 1];
       }
 
-      lastRelayedBlock = lastRelayedLog.blockNumber;
-
-      // Remove pending logs and advance query.
+      // Remove pending logs.
       syncedEventCount = mirrorContractEventCount;
-      interval.fromBlock = interval.toBlock + 1;
-      interval.toBlock = interval.fromBlock + 100000;
+      lastRelayedBlock = lastRelayedLog.blockNumber;
+      break;
     }
+
+    interval.fromBlock = interval.toBlock + 1;
+    interval.toBlock = interval.fromBlock + 100000;
   }
   console.info(`Bot synced. ${syncedEventCount}/${mirrorContractEventCount}`);
 
