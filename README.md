@@ -58,7 +58,7 @@ Sokol Network: `0x584F1896ce5876aB38cF28CC4CD2b93A1E319bF0`
 
 ## Production
 
-> To start with PM2 use `pm2 start yarn --interpreter bash --name gtcr-events-bot -- start:bot`
+> To start with PM2 use `pm2 start yarn --interpreter bash --name gtcr-event-mirror -- start:bot`
 
 ## Contributing
 

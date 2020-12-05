@@ -22,13 +22,18 @@ const itemStatusChangeHandler = async (
 
   // Fetch logs in steps to avoid getting rate limited.
   const interval = {
-    fromBlock: 0,
-    toBlock: 100000
+    fromBlock: Number(process.env.WATCH_CONTRACT_DEPLOY_BLOCK),
+    toBlock: Number(process.env.WATCH_CONTRACT_DEPLOY_BLOCK) + 100000
   };
 
   let lastRelayedBlock = 0;
   while (syncedEventCount !== mirrorContractEventCount) {
-    console.info(`Syncing... ${syncedEventCount}/${mirrorContractEventCount}`);
+    console.info(
+      `Syncing... ${syncedEventCount}/${mirrorContractEventCount} events`
+    );
+    console.info(
+      `Checking blocks from ${interval.fromBlock} to ${interval.toBlock}`
+    );
     const logs = await watchContractProvider.getLogs({
       ...gtcr.filters.ItemStatusChange(),
       ...interval
@@ -111,6 +116,9 @@ const itemStatusChangeHandler = async (
         roundIndexes = roundIndexes.slice(numItemsToSubmit);
         disputesCreated = disputesCreated.slice(numItemsToSubmit);
         requestsResolved = requestsResolved.slice(numItemsToSubmit);
+
+        // Delay to allow more confirmations.
+        await delay(15 * 1000);
       }
     } else if (logs.length > 0) {
       mirrorContractEventCount = Number(
