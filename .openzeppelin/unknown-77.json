@@ -1,0 +1,61 @@
+{
+  "manifestVersion": "3.1",
+  "impls": {
+    "847dfa23bad798f0c286061d8c6eea44e0124b676623568f3b9ef9a41cb7e79b": {
+      "address": "0x6Ca9CE60a5464701042E9cb3657070988167b17b",
+      "txHash": "0x04d2d2c839d782da5005ac55be4400c499f7539940fde33928bd5a2df0d28298",
+      "layout": {
+        "storage": [
+          {
+            "contract": "GTCREventsMirror",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "contracts/GTCREventsMirror.sol:16"
+          },
+          {
+            "contract": "GTCREventsMirror",
+            "label": "admin",
+            "type": "t_address",
+            "src": "contracts/GTCREventsMirror.sol:17"
+          },
+          {
+            "contract": "GTCREventsMirror",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "contracts/GTCREventsMirror.sol:18"
+          },
+          {
+            "contract": "GTCREventsMirror",
+            "label": "eventToCount",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "src": "contracts/GTCREventsMirror.sol:19"
+          },
+          {
+            "contract": "GTCREventsMirror",
+            "label": "ITEM_STATUS_CHANGE_IDENTIFIER",
+            "type": "t_uint256",
+            "src": "contracts/GTCREventsMirror.sol:25"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          }
+        }
+      }
+    }
+  },
+  "admin": {
+    "address": "0x077f079D01050cb8a18f67fA458a2f8B5DE36f45",
+    "txHash": "0xe07febf1971abea9e4df5213f521bccf686625f683f69fb6c43b73f9107ee969"
+  }
+}

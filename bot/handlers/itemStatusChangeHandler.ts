@@ -65,11 +65,17 @@ const itemStatusChangeHandler = async (
   }
   console.info(`Bot synced. ${syncedEventCount}/${mirrorContractEventCount}`);
 
-  // Relay pending events.
-  interval.fromBlock = lastRelayedBlock + 1;
+  if (mirrorContractEventCount === 0) {
+    interval.fromBlock = Number(process.env.WATCH_CONTRACT_DEPLOY_BLOCK);
+    interval.toBlock = Number(process.env.WATCH_CONTRACT_DEPLOY_BLOCK) + 100000;
+  } else {
+    // Relay pending events.
+    interval.fromBlock = lastRelayedBlock + 1;
+  }
+
+  console.info('Starting to relay events');
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    console.info('Running bot...');
     const blockHeight = await watchContractProvider.getBlockNumber();
     interval.toBlock =
       interval.fromBlock + 100000 > blockHeight

@@ -5,6 +5,9 @@ artifacts
 # These are development network files.
 .openzeppelin/unknown-*.json
 
+!.openzeppelin/unknown-77.json
+!.openzeppelin/unknown-100.json
+
 node_modules
 .vscode
 .env
