@@ -21,5 +21,15 @@ export default {
         version: '0.7.3'
       }
     ]
+  },
+  networks: {
+    xDai: {
+      url: 'https://xdai.poanetwork.dev',
+      accounts: []
+    },
+    sokol: {
+      url: 'https://sokol.poa.network',
+      accounts: []
+    }
   }
 };

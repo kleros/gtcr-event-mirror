@@ -6,10 +6,12 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start:bot": "tsc -p tsconfig.json && node ./dist/bot/index.js",
+    "start:bot": "yarn build:contracts && tsc -p tsconfig.json && node ./dist/bot/index.js",
     "build:contracts": "npx hardhat compile",
     "start:localnode": "yarn build:contracts && npx hardhat node",
     "deploy:localhost": "npx hardhat run scripts/test-local.ts --network localhost",
+    "deploy:sokol": "npx hardhat run --network sokol scripts/deploy.ts",
+    "deploy:xDai": "npx hardhat run --network xDai scripts/deploy.ts",
     "prettier-format": "prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --write",
     "format": "yarn prettier-format && eslint . --ext .ts --fix",
     "lint:js": "eslint . --ext .ts && prettier --config .prettierrc 'bot/**/*.ts' 'scripts/**/*.ts' --check",
