@@ -29,10 +29,10 @@ const itemStatusChangeHandler = async (
   let lastRelayedBlock = 0;
   while (syncedEventCount !== mirrorContractEventCount) {
     console.info(
-      `Syncing... ${syncedEventCount}/${mirrorContractEventCount} events`
+      ` Syncing... ${syncedEventCount}/${mirrorContractEventCount} events`
     );
     console.info(
-      `Checking blocks from ${interval.fromBlock} to ${interval.toBlock}`
+      ` Checking blocks from ${interval.fromBlock} to ${interval.toBlock}`
     );
     const logs = await watchContractProvider.getLogs({
       ...gtcr.filters.ItemStatusChange(),
@@ -65,12 +65,12 @@ const itemStatusChangeHandler = async (
     interval.toBlock = interval.fromBlock + 100000;
   }
   console.info(`Bot synced. ${syncedEventCount}/${mirrorContractEventCount}`);
+  console.info('');
 
   if (mirrorContractEventCount === 0) {
     interval.fromBlock = Number(process.env.WATCH_CONTRACT_DEPLOY_BLOCK);
     interval.toBlock = Number(process.env.WATCH_CONTRACT_DEPLOY_BLOCK) + 100000;
   } else {
-    // Relay pending events.
     interval.fromBlock = lastRelayedBlock + 1;
   }
 
@@ -96,8 +96,11 @@ const itemStatusChangeHandler = async (
     let disputesCreated = logs.map(({ args }) => args._disputed);
     let requestsResolved = logs.map(({ args }) => args._resolved);
 
-    if (logs.length >= 10) {
-      // Relay in batches of at most 10 logs to avoid hitting gas limits.
+    if (logs.length > 0) {
+      console.info(
+        ` Got ${logs.length} events between blocks ${interval.fromBlock} and ${interval.toBlock}`
+      );
+
       const numberOfBatches = Math.ceil(logs.length / 10);
       for (let i = 0; i < numberOfBatches; i++) {
         const numItemsToSubmit = itemIDs.length >= 10 ? 10 : itemIDs.length;
@@ -105,17 +108,17 @@ const itemStatusChangeHandler = async (
           await mirrorGtcr.eventToCount(EventIdentifier.ItemStatusChange)
         );
 
-        console.info('Emitting event for...', mirrorContractEventCount);
+        console.info(
+          `  Emitting ${numItemsToSubmit} events starting at ${mirrorContractEventCount}`
+        );
         await mirrorGtcr.emitItemStatusChange(
-          itemIDs.slice(0, i + numItemsToSubmit),
-          requestIndexes.slice(0, i + numItemsToSubmit),
-          roundIndexes.slice(0, i + numItemsToSubmit),
-          disputesCreated.slice(0, i + numItemsToSubmit),
-          requestsResolved.slice(0, i + numItemsToSubmit),
+          itemIDs.slice(0, numItemsToSubmit),
+          requestIndexes.slice(0, numItemsToSubmit),
+          roundIndexes.slice(0, numItemsToSubmit),
+          disputesCreated.slice(0, numItemsToSubmit),
+          requestsResolved.slice(0, numItemsToSubmit),
           mirrorContractEventCount
         );
-        console.info('Done.');
-        console.info('');
 
         // Remove relayed txes.
         itemIDs = itemIDs.slice(numItemsToSubmit);
@@ -125,23 +128,8 @@ const itemStatusChangeHandler = async (
         requestsResolved = requestsResolved.slice(numItemsToSubmit);
 
         // Delay to allow more confirmations.
-        await delay(15 * 1000);
+        await delay(botPeriodSeconds * 1000);
       }
-    } else if (logs.length > 0) {
-      mirrorContractEventCount = Number(
-        await mirrorGtcr.eventToCount(EventIdentifier.ItemStatusChange)
-      );
-      console.info('Emitting event for...', mirrorContractEventCount);
-      await mirrorGtcr.emitItemStatusChange(
-        itemIDs,
-        requestIndexes,
-        roundIndexes,
-        disputesCreated,
-        requestsResolved,
-        mirrorContractEventCount
-      );
-      console.info('Done.');
-      console.info('');
     }
 
     interval.fromBlock = interval.toBlock + 1;
