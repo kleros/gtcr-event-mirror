@@ -10,6 +10,9 @@ artifacts
 
 node_modules
 .vscode
-.env
 dist
 yarn-error.log
+
+.env
+.env.*
+!.env.example

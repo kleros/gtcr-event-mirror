@@ -120,6 +120,8 @@ const itemStatusChangeHandler = async (
           mirrorContractEventCount
         );
 
+        console.info('Done.');
+
         // Remove relayed txes.
         itemIDs = itemIDs.slice(numItemsToSubmit);
         requestIndexes = requestIndexes.slice(numItemsToSubmit);
